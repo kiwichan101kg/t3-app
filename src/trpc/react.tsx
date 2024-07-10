@@ -38,8 +38,10 @@ export type RouterInputs = inferRouterInputs<AppRouter>;
 export type RouterOutputs = inferRouterOutputs<AppRouter>;
 
 export function TRPCReactProvider(props: { children: React.ReactNode }) {
+  // TanstackQueryクライアントを作成
   const queryClient = getQueryClient();
 
+  // tRPCクライアントを作成
   const [trpcClient] = useState(() =>
     api.createClient({
       links: [
@@ -58,7 +60,7 @@ export function TRPCReactProvider(props: { children: React.ReactNode }) {
           },
         }),
       ],
-    })
+    }),
   );
 
   return (

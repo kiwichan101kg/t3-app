@@ -7,8 +7,11 @@ import {
 } from "~/server/api/trpc";
 
 export const postRouter = createTRPCRouter({
+  // 1つのAPIの入出力を定義。
   hello: publicProcedure
-    .input(z.object({ text: z.string() }))
+    // 入力にはZodのスキーマバリデーションライブラリを使用
+    .input(z.object({ text: z.string() })) // textプロパティで文字列の値のオブジェクトを受け取る
+    // 入力データをもとに出力するデータを定義
     .query(({ input }) => {
       return {
         greeting: `Hello ${input.text}`,

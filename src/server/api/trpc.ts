@@ -26,6 +26,7 @@ import { db } from "~/server/db";
  *
  * @see https://trpc.io/docs/server/context
  */
+// コンテキストの作成
 export const createTRPCContext = async (opts: { headers: Headers }) => {
   const session = await getServerAuthSession();
 
@@ -43,6 +44,7 @@ export const createTRPCContext = async (opts: { headers: Headers }) => {
  * ZodErrors so that you get typesafety on the frontend if your procedure fails due to validation
  * errors on the backend.
  */
+// APIの初期化
 const t = initTRPC.context<typeof createTRPCContext>().create({
   transformer: superjson,
   errorFormatter({ shape, error }) {
@@ -76,6 +78,7 @@ export const createCallerFactory = t.createCallerFactory;
  *
  * @see https://trpc.io/docs/router
  */
+// ルーターを作成する関数
 export const createTRPCRouter = t.router;
 
 /**
@@ -85,6 +88,7 @@ export const createTRPCRouter = t.router;
  * guarantee that a user querying is authorized, but you can still access user session data if they
  * are logged in.
  */
+// 認証不要のプロシージャ
 export const publicProcedure = t.procedure;
 
 /**
@@ -95,6 +99,7 @@ export const publicProcedure = t.procedure;
  *
  * @see https://trpc.io/docs/procedures
  */
+// 認証が必要なプロシージャ
 export const protectedProcedure = t.procedure.use(({ ctx, next }) => {
   if (!ctx.session || !ctx.session.user) {
     throw new TRPCError({ code: "UNAUTHORIZED" });
